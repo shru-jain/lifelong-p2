@@ -16,11 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from readers.views import index, book_filter, user_filter
+from readers.views import index, book_filter, user_filter, users_page, user_alt_filter
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
-    path('bookFilter/', book_filter, name='book_filter'),
-    path('userFilter/', user_filter, name='user_filter')
+    path('usersPage/', users_page, name='users_page'),
+    path('filter/', book_filter, name='book_filter'),
+    path('usersPage/filter/', user_filter, name='user_filter'),
+    path('usersPage/altFilter/', user_alt_filter, name='user_alt_filter')
+
 ]

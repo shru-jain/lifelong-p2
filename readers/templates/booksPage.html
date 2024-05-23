@@ -14,12 +14,11 @@
             .block {
                 padding: 20px 50px 0px
             }
-            #myForm {
+            #book-filter-form {
                 padding: 0px 0px 20px
             }
             .center-text {
                 text-align: center;
-
             }
             .red {
                 color: rgb(246, 76, 76)
@@ -33,10 +32,10 @@
                         <p class="navbar-item">DB Search</p>
                     </div>
         
-                    <a class="navbar-item is-selected" id = "books-tab">
+                    <a class="navbar-item is-selected" id = "books-tab" href="{% url 'index' %}">
                         Books
                       </a>
-                      <a class="navbar-item" id = "users-tab">
+                      <a class="navbar-item" id = "users-tab" href = "{% url 'users_page' %}">
                         Users
                       </a>
                 </nav>
@@ -82,68 +81,8 @@
                 </div>
                 {% endif %}
             </div>
-            <div class = "block is-hidden" id = "users-content" >
-                <h1 class = "title is-4">Add a filter</h1>
-                <form id="user-filter-form" method="post" action="{% url 'user_filter' %}">
-                    <div class = "field">
-                        <label for="dropdown1User">Choose a key:</label>
-                        <select id="dropdown1User" name="key">
-                            <option value="">Select an option</option>
-                            <option value="userName">Name of user</option>
-                            <option value="age">Age</option>
-                            <option value="numBooks">Number of books read</option>
-                            <option value="typeBooks">Book includes</option>
-
-                        </select>
-                    </div>
-                    
-                    <div class = "field regular">
-                        <label for="dropdown2User">Choose a constraint:</label>
-                        <select id="dropdown2User" name="constraint">
-                            <option value="">Select an option</option>
-                            <option value="&lt;">&lt;</option>
-                            <option value="=">=</option>
-                            <option value="&gt;">&gt;</option>
-                            
-                        </select>
-                    </div>
-                    <div class = "field regular">
-                        <label for="textFieldUser">Choose a value:</label>
-                        <input type="text" id="textFieldUser" name="value" placeholder="value">
-                    </div>
-                    
-                    <button type="submit" id="submitBtnUser" class = "regular" disabled>Submit</button>
-                    <button type="button" id="clearBtnUser" class = "regular">Clear</button>
-                </form>
-                <div class = "irregular is-hidden">
-                    <form method="post" class = "field">
-                        {{ form.as_p }}
-                        <button type="submit" id="submitBtnUser2" >Submit</button>
-                        <button type="button" id="clearBtnUser2">Clear</button>
-                    </form>
-                    </div>
-                <h1 class = "title is-4">Results</h1>
-                {% if users %}
-                {% for user in users %}
-                <div class = "box">
-                    <p><strong>User: </strong>{{user.name}}</p>
-                    <p><strong>Age: </strong>{{user.age}}</p>
-                    <p><strong>Books Read: </strong></p>
-                    <ul>
-                        {% for book in user.liked_books.all %}
-                            <li>{{ book.name }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endfor %}
-                {% else %}
-                <div class="title is-4 center-text red">
-                    No results
-                </div>
-                {% endif %}
-            </div>
         </main>
-        <script src="{% static 'js/script.js' %}"></script>
+        <script src="{% static 'js/scriptBook.js' %}"></script>
 
     </body>
     </html>

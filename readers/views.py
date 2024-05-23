@@ -12,9 +12,10 @@ def is_float(s):
     except ValueError:
         return False
     
+
 def getForm():
-    bookNames = Book.objects.all().values_list('id', 'name')
-    choices = [(book[0], book[1]) for book in bookNames]
+    bookNames = Book.objects.all().values_list('name', flat=True)
+    choices = [(book, book) for book in bookNames]
     form = OptionsForm()
     form.fields['options'].choices = choices
     return form
@@ -22,20 +23,27 @@ def getForm():
 @csrf_exempt
 def index(request):
     
-    users = User.objects.all()
     books = Book.objects.all()
     context = {
-        'users': users,
         'books': books,
         'form': getForm()
     }
     return render(request, 'booksPage.html', context)
 
+@csrf_exempt
+def users_page(request):
+    
+    users = User.objects.all()
+    context = {
+        'users': users,
+        'form': getForm()
+    }
+    return render(request, 'usersPage.html', context)
+
 
 
 @csrf_exempt
 def book_filter(request):
-    users = User.objects.all()
     if request.method == 'POST':
         key = str(request.POST.get('key'))
         constraint = str(request.POST.get('constraint'))
@@ -50,7 +58,7 @@ def book_filter(request):
 
         else:
             if not is_float(value):
-                return render(request, 'booksPage.html', {"users":users})
+                return render(request, 'booksPage.html', {})
 
             if constraint == '<':
                 books = Book.objects.filter(price__lt=value).order_by('name')
@@ -62,7 +70,6 @@ def book_filter(request):
     else:
         books = Book.objects.all()
     context = {
-        'users': users,
         'books': books,
         'form': getForm()
     }
@@ -73,7 +80,6 @@ def book_filter(request):
 @csrf_exempt
 def user_filter(request):
     print("herehere")
-    books = Book.objects.all()
     if request.method == 'POST':
         key = str(request.POST.get('key'))
         constraint = str(request.POST.get('constraint'))
@@ -96,24 +102,36 @@ def user_filter(request):
                 users = User.objects.filter(age=value).order_by('name')
         else: #numBooks
             if not is_float(value):
-                return render(request, 'booksPage.html', {"books":books})
+                return render(request, 'booksPage.html', {})
             if constraint == '<':
-                User.objects.annotate(num_liked_books=Count('liked_books')).filter(num_liked_books__lt=value)
+                users = User.objects.annotate(num_liked_books=Count('liked_books')).filter(num_liked_books__lt=value)
             elif constraint == '>':
-                User.objects.annotate(num_liked_books=Count('liked_books')).filter(num_liked_books__gt=value)
+                users = User.objects.annotate(num_liked_books=Count('liked_books')).filter(num_liked_books__gt=value)
             else:
-                User.objects.annotate(num_liked_books=Count('liked_books')).filter(num_liked_books=value)
+                users = User.objects.annotate(num_liked_books=Count('liked_books')).filter(num_liked_books=value)
     else:
         users = User.objects.all()
     context = {
         'users': users,
-        'books': books,
         'form': getForm()
     }
-    return render(request, 'booksPage.html', context)
+    return render(request, 'usersPage.html', context)
 
 
 
 @csrf_exempt
 def user_alt_filter(request):
-    return index(request)
+    print("reached here tho")
+    if request.method == 'POST':
+        selected_book_names = request.POST.getlist('options')
+        books = Book.objects.filter(name__in=selected_book_names)
+        users = User.objects.filter(liked_books__in=books).distinct()
+        context = {
+            'users': users,
+            'form': getForm()
+        }
+        return render(request, 'usersPage.html', context)
+            
+    return users_page(request)
+
+    
