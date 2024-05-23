@@ -1,0 +1,37 @@
+[
+    {
+      "model": "readers.book",
+      "pk": 1,
+      "fields": {
+        "name": "To Kill A Mockingbird",
+        "price": 9.99
+      }
+    },
+    {
+      "model": "readers.book",
+      "pk": 2,
+      "fields": {
+        "name": "The Anthropocene Reviewed",
+        "price": 12.99
+      }
+    },
+    {
+      "model": "readers.user",
+      "pk": 1,
+      "fields": {
+        "name": "John Doe",
+        "age": 30,
+        "liked_books": [1, 2]
+      }
+    },
+    {
+      "model": "readers.user",
+      "pk": 2,
+      "fields": {
+        "name": "Jane Smith",
+        "age": 50,
+        "liked_books": [2]
+      }
+    }
+  ]
+  
