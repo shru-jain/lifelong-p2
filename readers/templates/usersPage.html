@@ -42,7 +42,25 @@
                 </nav>
 
             <div class = "block " id = "users-content" >
-                <h1 class = "title is-4">Add a filter</h1>
+                <h1 class = "title is-4">Add a user</h1>
+                <form class = "forms" method="post" action ="{% url 'add_user' %}" >
+                    <div class = "field">
+                    <label for="name">User Name:</label>
+                    <input type="text" id="name" name="name" required><br>
+                </div>
+                    <div class = "field">
+
+                    <label for="age">User Age:</label>
+                    <input type="number" id="age" name="age" required step="1"><br>
+                </div>
+                <div class = "field">
+                    <label>User Liked Books:</label>
+                    {{ checkboxForm.as_p }}
+                </div>
+                    <button type="submit">Add User</button>
+                
+                </form>
+                <h1 class = "title is-4">Add a search filter</h1>
                 <form id="user-filter-form" method="post" action="{% url 'user_filter' %}">
                     <div class = "field">
                         <label for="dropdown1User">Choose a key:</label>
@@ -76,7 +94,7 @@
                 </form>
                 <div class = "irregular is-hidden">
                     <form method="post" class = "field" action="{% url 'user_alt_filter' %}">
-                        {{ form.as_p }}
+                        {{ checkboxForm.as_p }}
                         <button type="submit" id="submitBtnUser2" >Submit</button>
                         <button type="button" id="clearBtnUser2">Clear</button>
                     </form>
@@ -93,6 +111,9 @@
                             <li>{{ book.name }}</li>
                         {% endfor %}
                     </ul>
+                    <form method="post" action="{% url 'delete_user' user.pk %}">
+                        <button type="submit">Delete</button>
+                    </form>
                 </div>
                 {% endfor %}
                 {% else %}

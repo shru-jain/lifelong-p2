@@ -16,12 +16,46 @@
       }
     },
     {
+        "model": "readers.book",
+        "pk": 3,
+        "fields": {
+          "name": "Harry Potter and the Sorcerer's Stone",
+          "price": 10.99
+        }
+      },
+      {
+        "model": "readers.book",
+        "pk": 4,
+        "fields": {
+          "name": "1984",
+          "price": 8.99
+        }
+      },
+      {
+        "model": "readers.user",
+        "pk": 3,
+        "fields": {
+          "name": "Alice Johnson",
+          "age": 25,
+          "liked_books": [3, 4]
+        }
+      },
+      {
+        "model": "readers.user",
+        "pk": 4,
+        "fields": {
+          "name": "Bob Brown",
+          "age": 40,
+          "liked_books": [1, 4]
+        }
+      },
+    {
       "model": "readers.user",
       "pk": 1,
       "fields": {
         "name": "John Doe",
         "age": 30,
-        "liked_books": [1, 2]
+        "liked_books": [1, 2, 3]
       }
     },
     {

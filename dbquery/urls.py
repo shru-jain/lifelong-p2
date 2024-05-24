@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from readers.views import index, book_filter, user_filter, users_page, user_alt_filter
+from readers.views import index, book_filter, user_filter, users_page, user_alt_filter, delete_book, delete_user, add_book, add_user
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,6 +24,10 @@ urlpatterns = [
     path('usersPage/', users_page, name='users_page'),
     path('filter/', book_filter, name='book_filter'),
     path('usersPage/filter/', user_filter, name='user_filter'),
-    path('usersPage/altFilter/', user_alt_filter, name='user_alt_filter')
+    path('usersPage/altFilter/', user_alt_filter, name='user_alt_filter'),
+    path('<int:pk>/delete/', delete_book, name='delete_book'),
+    path('usersPage/<int:pk>/delete/', delete_user, name='delete_user'),
+    path('addBook/',add_book, name='add_book'),
+    path('usersPage/addUser', add_user, name = "add_user")
 
 ]

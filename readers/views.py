@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import User, Book
 from django.db import connection
 from django.views.decorators.csrf import csrf_exempt
-from .forms import OptionsForm
+from .forms import OptionsForm, BookForm
 from django.db.models import Count
 
 def is_float(s):
@@ -13,9 +13,9 @@ def is_float(s):
         return False
     
 
-def getForm():
-    bookNames = Book.objects.all().values_list('name', flat=True)
-    choices = [(book, book) for book in bookNames]
+def getCheckboxForm():
+    books = Book.objects.all().values_list('pk', 'name')
+    choices = [(pk, name) for pk, name in books]
     form = OptionsForm()
     form.fields['options'].choices = choices
     return form
@@ -26,7 +26,7 @@ def index(request):
     books = Book.objects.all()
     context = {
         'books': books,
-        'form': getForm()
+        'checkboxForm': getCheckboxForm()
     }
     return render(request, 'booksPage.html', context)
 
@@ -36,7 +36,7 @@ def users_page(request):
     users = User.objects.all()
     context = {
         'users': users,
-        'form': getForm()
+        'checkboxForm': getCheckboxForm()
     }
     return render(request, 'usersPage.html', context)
 
@@ -71,7 +71,7 @@ def book_filter(request):
         books = Book.objects.all()
     context = {
         'books': books,
-        'form': getForm()
+        'checkboxForm': getCheckboxForm()
     }
     return render(request, 'booksPage.html', context)
                 
@@ -113,7 +113,7 @@ def user_filter(request):
         users = User.objects.all()
     context = {
         'users': users,
-        'form': getForm()
+        'checkboxForm': getCheckboxForm()
     }
     return render(request, 'usersPage.html', context)
 
@@ -123,15 +123,67 @@ def user_filter(request):
 def user_alt_filter(request):
     print("reached here tho")
     if request.method == 'POST':
-        selected_book_names = request.POST.getlist('options')
+        selected_book_pks = request.POST.getlist('options')
+        selected_books = Book.objects.filter(pk__in=selected_book_pks).values_list('name', flat=True)
+        selected_book_names = list(selected_books)
         books = Book.objects.filter(name__in=selected_book_names)
         users = User.objects.filter(liked_books__in=books).distinct()
         context = {
             'users': users,
-            'form': getForm()
+            'checkboxForm': getCheckboxForm()
         }
         return render(request, 'usersPage.html', context)
             
     return users_page(request)
 
+
+@csrf_exempt
+def delete_book(request, pk):
+    if request.method == 'POST':
+        book = Book.objects.get(pk=pk)
+        book.delete()
+        return redirect('index')  # Redirect to the page displaying the list of books
+    else:
+        # Handle GET request (if any)
+        return(index(request))
+
+@csrf_exempt
+def delete_user(request, pk):
+    if request.method == 'POST':
+        user = User.objects.get(pk=pk)
+        user.delete()
+        return redirect('users_page')  # Redirect to the page displaying the list of users
+    else:
+        # Handle GET request (if any)
+        return users_page(request)
+
+
+@csrf_exempt
+def add_book(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        price = request.POST.get('price')
+        if name and price:
+            if is_float(price):
+                book = Book(name=name, price=price)
+                book.save() 
+            # TODO: add error catching
+    return index(request)
+
+
+@csrf_exempt
+def add_user(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        age = request.POST.get('age')
+        liked_books_pks = request.POST.getlist('options')
+        if name and age and liked_books_pks:
+            # Create the new user
+            new_user = User.objects.create(name=name, age=int(age))
+
+            # Associate the liked books
+            liked_books = Book.objects.filter(pk__in=liked_books_pks)
+            new_user.liked_books.set(liked_books)
+        
+    return users_page(request)
     
