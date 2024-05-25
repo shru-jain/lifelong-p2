@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import User, Book
 from django.db import connection
 from django.views.decorators.csrf import csrf_exempt
-from .forms import OptionsForm, BookForm
+from .forms import OptionsForm, BookForm, UserForm
 from django.db.models import Count
 
 def is_float(s):
@@ -186,4 +186,28 @@ def add_user(request):
             new_user.liked_books.set(liked_books)
         
     return users_page(request)
-    
+
+@csrf_exempt
+def update_book(request, pk):
+    if request.method =='POST':
+        book = get_object_or_404(Book, pk=pk)
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+
+    return index(request)
+
+@csrf_exempt
+def update_user(request, pk):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        age = request.POST.get('age')
+        liked_books_pks = request.POST.getlist('options')
+        print(liked_books_pks)
+        user = User.objects.get(id=pk)
+        user.name = name
+        user.age = age
+        user.save()
+        user.liked_books.set(liked_books_pks)
+    return users_page(request)
+        

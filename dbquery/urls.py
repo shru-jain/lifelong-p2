@@ -16,7 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from readers.views import index, book_filter, user_filter, users_page, user_alt_filter, delete_book, delete_user, add_book, add_user
+from readers.views import index, book_filter, user_filter, users_page, user_alt_filter
+from readers.views import  delete_book, delete_user, add_book, add_user, update_book, update_user
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +29,8 @@ urlpatterns = [
     path('<int:pk>/delete/', delete_book, name='delete_book'),
     path('usersPage/<int:pk>/delete/', delete_user, name='delete_user'),
     path('addBook/',add_book, name='add_book'),
-    path('usersPage/addUser', add_user, name = "add_user")
+    path('usersPage/addUser', add_user, name = "add_user"),
+    path('update_book/<int:pk>/', update_book, name = "update_book"),
+    path('usersPage/update_user/<int:pk>/', update_user, name = "update_user")
 
 ]

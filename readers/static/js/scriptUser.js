@@ -59,6 +59,28 @@ document.addEventListener('DOMContentLoaded', function() {
         textFieldUser.value = '';
         submitBtnUser.disabled = true; // Disable the submit button
     });
+
+    const editButtons = document.querySelectorAll('.editButton');
+    editButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            console.log("edit button clicked")
+            // Find the corresponding edit form container
+            const editFormContainer = this.nextElementSibling;
+            
+            // Remove the 'is-hidden' class to show the form
+            editFormContainer.classList.remove('is-hidden');
+        });
+    });
+    const cancelButtons = document.querySelectorAll('.cancelButton');
+    cancelButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            // Find the corresponding edit form container
+            const editFormContainer = this.closest('.editFormContainer');
+            
+            // Add the 'is-hidden' class to hide the form
+            editFormContainer.classList.add('is-hidden');
+        });
+    });
  
 });
 

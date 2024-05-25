@@ -12,17 +12,27 @@
                 color: #3273dc;
             }
             .block {
-                padding: 20px 50px 0px
+                padding: 20px 50px 0px;
             }
             #user-filter-form {
-                padding: 0px 0px 20px
+                padding: 0px 0px 20px;
             }
             .center-text {
                 text-align: center;
 
             }
             .red {
-                color: rgb(246, 76, 76)
+                color: rgb(246, 76, 76);
+            }
+            .editFormContainer {
+                background-color: rgb(222, 222, 222);
+                padding: 20px;
+            }
+            .button {
+                margin: 0px 0px 10px;
+            }
+            .button.is-primary {
+                background-color: #3273dc;
             }
         </style>
     </head>
@@ -57,7 +67,7 @@
                     <label>User Liked Books:</label>
                     {{ checkboxForm.as_p }}
                 </div>
-                    <button type="submit">Add User</button>
+                    <button class= "button is-primary" type="submit">Add User</button>
                 
                 </form>
                 <h1 class = "title is-4">Add a search filter</h1>
@@ -68,7 +78,7 @@
                             <option value="">Select an option</option>
                             <option value="userName">Name of user</option>
                             <option value="age">Age</option>
-                            <option value="numBooks">Number of books read</option>
+                            <option value="numBooks">Number of books liked</option>
                             <option value="typeBooks">Book includes</option>
 
                         </select>
@@ -89,14 +99,14 @@
                         <input type="text" id="textFieldUser" name="value" placeholder="value">
                     </div>
                     
-                    <button type="submit" id="submitBtnUser" class = "regular" disabled>Submit</button>
-                    <button type="button" id="clearBtnUser" class = "regular">Clear</button>
+                    <button type="submit" id="submitBtnUser" class = "regular button is-success" disabled>Submit</button>
+                    <button type="button" id="clearBtnUser" class = "regular button">Clear</button>
                 </form>
                 <div class = "irregular is-hidden">
                     <form method="post" class = "field" action="{% url 'user_alt_filter' %}">
                         {{ checkboxForm.as_p }}
-                        <button type="submit" id="submitBtnUser2" >Submit</button>
-                        <button type="button" id="clearBtnUser2">Clear</button>
+                        <button type="submit" id="submitBtnUser2" class= "button">Submit</button>
+                        <button type="button" id="clearBtnUser2" class= "button">Clear</button>
                     </form>
                     </div>
                 <h1 class = "title is-4">Results</h1>
@@ -105,15 +115,31 @@
                 <div class = "box">
                     <p><strong>User: </strong>{{user.name}}</p>
                     <p><strong>Age: </strong>{{user.age}}</p>
-                    <p><strong>Books Read: </strong></p>
+                    <p><strong>Books Liked: </strong></p>
                     <ul>
                         {% for book in user.liked_books.all %}
                             <li>{{ book.name }}</li>
                         {% endfor %}
                     </ul>
                     <form method="post" action="{% url 'delete_user' user.pk %}">
-                        <button type="submit">Delete</button>
+                        <button type="submit" class= "button is-small is-danger">Delete</button>
                     </form>
+                    <button class="editButton button is-small">Edit</button>
+                    <div class="editFormContainer is-hidden">
+                        <form class="editForm" method="post" action="{% url 'update_user' user.pk %}">
+                            <input type="hidden" name="user_id" id="editUserId" value={{user.pk}}>
+                            <label for="editUserName"><strong>Name:</strong></label>
+                            <input type="text" name="name" id="editUserName" value="{{ user.name }}">
+                            <label for="editUserAge"><strong>Age:</strong></label>
+                            <input type="number" name="age" id="editUserAge" value={{user.age}}>
+                            <div class = "field">
+                                <label><strong>User Liked Books:</strong></label>
+                                {{ checkboxForm.as_p }}
+                            </div>
+                            <button type="submit" class="saveEditButton button is-success">Save</button>
+                            <button type="button" class="cancelButton button">Cancel</button>
+                        </form>
+                    </div>
                 </div>
                 {% endfor %}
                 {% else %}
