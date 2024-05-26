@@ -1,21 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // document.getElementById("users-tab").addEventListener('click', (e) => {
 
-    //     document.getElementById("users-tab").classList.add("is-selected");
-    //     document.getElementById("books-tab").classList.remove("is-selected");
-    //     document.getElementById("users-content").classList.remove("is-hidden");
-    //     document.getElementById("books-content").classList.add("is-hidden");
-
-    // })
-    // document.getElementById("books-tab").addEventListener('click', (e) => {
-
-    //     document.getElementById("books-tab").classList.add("is-selected");
-    //     document.getElementById("users-tab").classList.remove("is-selected");
-    //     document.getElementById("books-content").classList.remove("is-hidden");
-    //     document.getElementById("users-content").classList.add("is-hidden");
-
-    // })
-
+    // get all appropriate elements
     const dropdown1User = document.getElementById('dropdown1User');
     const dropdown2User = document.getElementById('dropdown2User');
     const textFieldUser = document.getElementById('textFieldUser');
@@ -23,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const clearBtnUser = document.getElementById('clearBtnUser');
 
     function checkFields() {
-        console.log("reached here")
         // Check if all fields are filled
 
         if (dropdown1User.value.trim() && dropdown2User.value.trim() && textFieldUser.value.trim()) {
@@ -31,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             submitBtnUser.disabled = true; // Disable the submit button
         }
-
+        // change which type of form fields are shown based on the type of constraint (checkbox vs regular constraint)
         if (dropdown1User.value.trim() == "typeBooks") {
             [...document.getElementsByClassName("regular")].forEach(element => element.classList.add("is-hidden"));
             [...document.getElementsByClassName("irregular")].forEach(element => element.classList.remove("is-hidden"));
@@ -44,7 +28,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Add event listeners to each input field
-
     dropdown1User.addEventListener('change', checkFields);
     dropdown2User.addEventListener('change', checkFields);
     textFieldUser.addEventListener('input', checkFields);
@@ -60,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
         submitBtnUser.disabled = true; // Disable the submit button
     });
 
+    // get all edit buttons
     const editButtons = document.querySelectorAll('.editButton');
     editButtons.forEach(function(button) {
         button.addEventListener('click', function() {
@@ -71,6 +55,8 @@ document.addEventListener('DOMContentLoaded', function() {
             editFormContainer.classList.remove('is-hidden');
         });
     });
+
+    // get all cancel buttons
     const cancelButtons = document.querySelectorAll('.cancelButton');
     cancelButtons.forEach(function(button) {
         button.addEventListener('click', function() {

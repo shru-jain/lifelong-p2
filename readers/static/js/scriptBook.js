@@ -1,21 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // document.getElementById("users-tab").addEventListener('click', (e) => {
 
-    //     document.getElementById("users-tab").classList.add("is-selected");
-    //     document.getElementById("books-tab").classList.remove("is-selected");
-    //     document.getElementById("users-content").classList.remove("is-hidden");
-    //     document.getElementById("books-content").classList.add("is-hidden");
-
-    // })
-    // document.getElementById("books-tab").addEventListener('click', (e) => {
-
-    //     document.getElementById("books-tab").classList.add("is-selected");
-    //     document.getElementById("users-tab").classList.remove("is-selected");
-    //     document.getElementById("books-content").classList.remove("is-hidden");
-    //     document.getElementById("users-content").classList.add("is-hidden");
-
-    // })
-
+    // get all appropriate elements
     const dropdown1Book = document.getElementById('dropdown1Book');
     const dropdown2Book = document.getElementById('dropdown2Book');
     const textFieldBook = document.getElementById('textFieldBook');
@@ -24,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     function checkFields() {
-        console.log("reached here")
         // Check if all fields are filled
         if (dropdown1Book.value.trim() && dropdown2Book.value.trim() && textFieldBook.value.trim()) {
             submitBtnBook.disabled = false; // Enable the submit button
@@ -48,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
         textFieldBook.value = '';
         submitBtnBook.disabled = true; // Disable the submit button
     });
-
+    // get all edit buttons
     const editButtons = document.querySelectorAll('.editButton');
     editButtons.forEach(function(button) {
         button.addEventListener('click', function() {
@@ -60,6 +44,8 @@ document.addEventListener('DOMContentLoaded', function() {
             editFormContainer.classList.remove('is-hidden');
         });
     });
+
+    // get all cancel buttons
     const cancelButtons = document.querySelectorAll('.cancelButton');
     cancelButtons.forEach(function(button) {
         button.addEventListener('click', function() {
@@ -70,8 +56,6 @@ document.addEventListener('DOMContentLoaded', function() {
             editFormContainer.classList.add('is-hidden');
         });
     });
-
-
 
  
 });

@@ -15,6 +15,7 @@ class Book(models.Model):
 class User(models.Model):
     name = models.CharField(max_length=100)
     age = models.IntegerField()
+    # on delete cascade is automatically handled
     liked_books = models.ManyToManyField(Book, related_name='liked_by_users')
 
     def __str__(self):
